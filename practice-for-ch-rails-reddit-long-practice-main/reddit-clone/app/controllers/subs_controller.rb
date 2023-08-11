@@ -6,6 +6,16 @@ class SubsController < ApplicationController
         render :edit
     end
 
+    def update 
+        @sub = Sub.find_by(id: params[:id])
+        if sub && sub.update(update_params)
+            redirect_to sub_url(@sub)
+        else
+            flash.now[:errors] = @sub.errors.full_messages
+            render :edit 
+        end
+    end
+
 
     private 
 
@@ -16,4 +26,10 @@ class SubsController < ApplicationController
             render :edit         
         end
     end
+
+    def update_params 
+        params.require(:sub).permit(:title, :description)
+    end
 end
+
+
